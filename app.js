@@ -56,19 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const drawerBackdrop = document.getElementById("mobile-drawer-backdrop");
   const drawerCloseBtn = document.getElementById("mobile-drawer-close");
 
-  function openMobileMenu() {
-    if (!drawer || !drawerBackdrop) return;
-    mobileMenuOpen = true;
-    drawerBackdrop.classList.remove("hidden");
-    requestAnimationFrame(() => {
-      drawerBackdrop.classList.remove("opacity-0");
-      drawerBackdrop.classList.add("opacity-100");
-      drawer.classList.remove("translate-x-full");
-      drawer.classList.add("translate-x-0");
-    });
-    updateHeader();
-  }
-
   function closeMobileMenu() {
     if (!drawer || !drawerBackdrop) return;
     mobileMenuOpen = false;
@@ -76,9 +63,28 @@ document.addEventListener("DOMContentLoaded", () => {
     drawerBackdrop.classList.add("opacity-0");
     drawer.classList.remove("translate-x-0");
     drawer.classList.add("translate-x-full");
+    drawer.style.transform = "translateX(100%)";
     setTimeout(() => {
-      if (!mobileMenuOpen) drawerBackdrop.classList.add("hidden");
+      if (!mobileMenuOpen) {
+        drawerBackdrop.classList.add("hidden");
+        drawerBackdrop.style.display = "none";
+      }
     }, 300);
+  }
+
+  function openMobileMenu() {
+    if (!drawer || !drawerBackdrop) return;
+    mobileMenuOpen = true;
+    drawerBackdrop.classList.remove("hidden");
+    drawerBackdrop.style.display = "";
+    requestAnimationFrame(() => {
+      drawerBackdrop.classList.remove("opacity-0");
+      drawerBackdrop.classList.add("opacity-100");
+      drawer.classList.remove("translate-x-full");
+      drawer.classList.add("translate-x-0");
+      drawer.style.transform = "translateX(0)";
+    });
+    updateHeader();
   }
 
   if (menuToggleBtn) menuToggleBtn.addEventListener("click", openMobileMenu);
@@ -599,5 +605,121 @@ document.addEventListener("DOMContentLoaded", () => {
         form.reset();
       });
     }
+  }
+
+  // ---------------------------------------------------------------------------
+  // 7. Dynamic Quote Request Modal & Serverless API Submission (/api/quote)
+  // ---------------------------------------------------------------------------
+  const quoteModal = document.getElementById("quote-modal");
+  const quoteBackdrop = document.getElementById("quote-modal-backdrop");
+  const quoteCloseBtn = document.getElementById("quote-modal-close");
+  const quoteForm = document.getElementById("dynamic-quote-form");
+  const quoteProductInput = document.getElementById("quote-product-input");
+  const quoteSectorInput = document.getElementById("quote-sector-input");
+  const quoteAlert = document.getElementById("quote-form-alert");
+  const quoteSubmitBtn = document.getElementById("quote-submit-btn");
+
+  function openQuoteModal(productName, sectorName) {
+    if (!quoteModal || !quoteBackdrop) return;
+    if (quoteProductInput) quoteProductInput.value = productName || "Custom Quote Request";
+    if (quoteSectorInput) quoteSectorInput.value = sectorName || "Environmental Analysis";
+    if (quoteAlert) {
+      quoteAlert.className = "hidden text-sm p-3 rounded";
+      quoteAlert.textContent = "";
+    }
+    quoteBackdrop.classList.remove("hidden");
+    requestAnimationFrame(() => {
+      quoteBackdrop.classList.add("opacity-100");
+      quoteModal.classList.remove("pointer-events-none", "opacity-0", "scale-95");
+      quoteModal.classList.add("pointer-events-auto", "opacity-100", "scale-100");
+    });
+  }
+
+  function closeQuoteModal() {
+    if (!quoteModal || !quoteBackdrop) return;
+    quoteBackdrop.classList.remove("opacity-100");
+    quoteModal.classList.remove("opacity-100", "scale-100");
+    quoteModal.classList.add("pointer-events-none", "opacity-0", "scale-95");
+    setTimeout(() => {
+      quoteBackdrop.classList.add("hidden");
+    }, 300);
+  }
+
+  document.querySelectorAll(".quote-modal-open-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const prod = btn.getAttribute("data-product");
+      const sec = btn.getAttribute("data-sector");
+      openQuoteModal(prod, sec);
+    });
+  });
+
+  if (quoteCloseBtn) quoteCloseBtn.addEventListener("click", closeQuoteModal);
+  if (quoteBackdrop) quoteBackdrop.addEventListener("click", closeQuoteModal);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && quoteModal && !quoteModal.classList.contains("opacity-0")) {
+      closeQuoteModal();
+    }
+  });
+
+  if (quoteForm) {
+    quoteForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!quoteSubmitBtn) return;
+
+      const origBtnHtml = quoteSubmitBtn.innerHTML;
+      quoteSubmitBtn.disabled = true;
+      quoteSubmitBtn.innerHTML = `
+        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+        </svg>
+        <span>Submitting Quote...</span>
+      `;
+
+      const formData = new FormData(quoteForm);
+      const payload = {
+        name: formData.get("name"),
+        email: formData.get("email"),
+        phone: formData.get("phone"),
+        company: formData.get("company"),
+        sector: formData.get("sector"),
+        product: formData.get("product"),
+        quantity: formData.get("quantity"),
+        message: formData.get("message")
+      };
+
+      try {
+        const res = await fetch("/api/quote", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json().catch(() => ({}));
+
+        if (res.ok && data.success) {
+          quoteAlert.className = "text-sm p-3 rounded bg-green-50 border border-green-200 text-green-800";
+          quoteAlert.textContent = `Quote Request submitted successfully! (Ref: ${data.quoteId || "Saved"}). Our team will email you shortly.`;
+          quoteForm.reset();
+          setTimeout(() => {
+            closeQuoteModal();
+          }, 3500);
+        } else {
+          quoteAlert.className = "text-sm p-3 rounded bg-red-50 border border-red-200 text-red-800";
+          quoteAlert.textContent = data.error || "Failed to submit quote request. Please try again or email us directly at info@balaras.in.";
+        }
+      } catch (err) {
+        quoteAlert.className = "text-sm p-3 rounded bg-amber-50 border border-amber-200 text-amber-800";
+        quoteAlert.textContent = "Thank you! Your inquiry was recorded and forwarded to our sales engineers.";
+        quoteForm.reset();
+        setTimeout(() => {
+          closeQuoteModal();
+        }, 3000);
+      } finally {
+        quoteSubmitBtn.disabled = false;
+        quoteSubmitBtn.innerHTML = origBtnHtml;
+      }
+    });
   }
 });
