@@ -3,6 +3,45 @@
   .hero-col-left { width: 40% !important; flex: 0 0 40% !important; max-width: 40% !important; }
   .hero-col-right { width: 60% !important; flex: 0 0 60% !important; max-width: 60% !important; }
 }
+
+/* Mobile Responsiveness Improvements */
+@media (max-width: 1023px) {
+  /* Prevent huge headings that overflow mobile viewports */
+  h1 { font-size: 2.25rem !important; line-height: 1.15 !important; }
+  
+  /* Hero section padding and height */
+  .hero-col-left { padding: 1.5rem !important; }
+  .hero-col-right { height: 320px !important; min-height: 280px !important; }
+  
+  /* Make all brochure images fit properly within mobile bounds */
+  #hero-env-subslider img, #env-sub-carousel img {
+    object-fit: contain !important;
+    padding: 0.5rem !important;
+  }
+  
+  /* Ensure header elements fit mobile screens */
+  header .container { height: 4.5rem !important; padding-left: 1rem !important; padding-right: 1rem !important; }
+  header img { height: 2.75rem !important; width: auto !important; }
+}
+
+@media (max-width: 640px) {
+  h1 { font-size: 1.85rem !important; }
+  .hero-col-right { height: 280px !important; }
+  
+  /* Prevent horizontal page scrolling on small phones */
+  html, body {
+    overflow-x: hidden !important;
+    position: relative;
+    width: 100%;
+  }
+  
+  /* Sector buttons wrap neatly on mobile */
+  .env-slide-btn {
+    font-size: 0.7rem !important;
+    padding: 0.35rem 0.6rem !important;
+  }
+}
+
 #mobile-drawer.translate-x-full { transform: translateX(100%) !important; }
 #mobile-drawer.translate-x-0 { transform: translateX(0) !important; }
 #mobile-drawer-backdrop { pointer-events: auto; }
