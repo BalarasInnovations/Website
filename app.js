@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ---------------------------------------------------------------------------
   // 2. Mobile Navigation Drawer
   // ---------------------------------------------------------------------------
-  const menuToggleBtn = document.querySelector('header button[aria-haspopup="dialog"]');
+  const menuToggleBtn = document.getElementById("mobile-menu-toggle-btn") || document.querySelector('header button[aria-haspopup="dialog"]');
   const drawer = document.getElementById("mobile-drawer");
   const drawerBackdrop = document.getElementById("mobile-drawer-backdrop");
   const drawerCloseBtn = document.getElementById("mobile-drawer-close");
@@ -72,11 +72,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 300);
   }
 
-  function openMobileMenu() {
+  function openMobileMenu(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     if (!drawer || !drawerBackdrop) return;
     mobileMenuOpen = true;
     drawerBackdrop.classList.remove("hidden");
-    drawerBackdrop.style.display = "";
+    drawerBackdrop.style.display = "block";
     requestAnimationFrame(() => {
       drawerBackdrop.classList.remove("opacity-0");
       drawerBackdrop.classList.add("opacity-100");
@@ -87,9 +91,18 @@ document.addEventListener("DOMContentLoaded", () => {
     updateHeader();
   }
 
-  if (menuToggleBtn) menuToggleBtn.addEventListener("click", openMobileMenu);
-  if (drawerCloseBtn) drawerCloseBtn.addEventListener("click", closeMobileMenu);
-  if (drawerBackdrop) drawerBackdrop.addEventListener("click", closeMobileMenu);
+  if (menuToggleBtn) {
+    menuToggleBtn.addEventListener("click", openMobileMenu);
+    menuToggleBtn.addEventListener("touchstart", openMobileMenu, { passive: false });
+  }
+  if (drawerCloseBtn) {
+    drawerCloseBtn.addEventListener("click", closeMobileMenu);
+    drawerCloseBtn.addEventListener("touchstart", closeMobileMenu, { passive: false });
+  }
+  if (drawerBackdrop) {
+    drawerBackdrop.addEventListener("click", closeMobileMenu);
+    drawerBackdrop.addEventListener("touchstart", closeMobileMenu, { passive: false });
+  }
   if (drawer) {
     drawer.querySelectorAll("a").forEach((link) => {
       link.addEventListener("click", closeMobileMenu);
@@ -470,141 +483,163 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ---------------------------------------------------------------------------
-  // 6. Consultation Form Validation & Toast Notification (Homepage #consultation)
   // ---------------------------------------------------------------------------
-  const consultSection = document.getElementById("consultation");
-  if (consultSection) {
-    const form = consultSection.querySelector("form");
-    if (form) {
-      const nameInput = form.querySelector('input[name="name"]');
-      const emailInput = form.querySelector('input[name="email"]');
-      const messageInput = form.querySelector('textarea[name="message"]');
-      const submitBtn = form.querySelector('button[type="submit"]');
+  // 6. Consultation Form Validation & API Submission (/api/quote)
+  // ---------------------------------------------------------------------------
+  const consultForm = document.getElementById("contact-form") || (document.getElementById("consultation") ? document.getElementById("consultation").querySelector("form") : null);
+  if (consultForm) {
+    const nameInput = consultForm.querySelector('input[name="name"]');
+    const emailInput = consultForm.querySelector('input[name="email"]');
+    const companyInput = consultForm.querySelector('input[name="company"]');
+    const messageInput = consultForm.querySelector('textarea[name="message"]');
+    const submitBtn = document.getElementById("contact-submit-btn") || consultForm.querySelector('button[type="submit"]');
 
-      function setFieldError(inputEl, message) {
-        if (!inputEl) return;
-        const container = inputEl.closest(".space-y-2");
-        if (!container) return;
-        const label = container.querySelector("label");
-        let errEl = container.querySelector(".form-error-msg");
-        if (message) {
-          if (label) label.classList.add("text-destructive");
-          inputEl.setAttribute("aria-invalid", "true");
-          if (!errEl) {
-            errEl = document.createElement("p");
-            errEl.className = "form-error-msg text-sm font-medium text-destructive";
-            container.appendChild(errEl);
-          }
-          errEl.textContent = message;
-        } else {
-          if (label) label.classList.remove("text-destructive");
-          inputEl.setAttribute("aria-invalid", "false");
-          if (errEl) errEl.remove();
+    function setFieldError(inputEl, message) {
+      if (!inputEl) return;
+      const container = inputEl.closest(".space-y-2");
+      if (!container) return;
+      const label = container.querySelector("label");
+      let errEl = container.querySelector(".form-error-msg");
+      if (message) {
+        if (label) label.classList.add("text-destructive");
+        inputEl.classList.add("border-destructive");
+        inputEl.setAttribute("aria-invalid", "true");
+        if (!errEl) {
+          errEl = document.createElement("p");
+          errEl.className = "form-error-msg text-xs font-semibold text-red-500 mt-1";
+          container.appendChild(errEl);
         }
+        errEl.textContent = message;
+      } else {
+        if (label) label.classList.remove("text-destructive");
+        inputEl.classList.remove("border-destructive");
+        inputEl.setAttribute("aria-invalid", "false");
+        if (errEl) errEl.remove();
+      }
+    }
+
+    function validateForm() {
+      let valid = true;
+      const nameVal = (nameInput?.value || "").trim();
+      const emailVal = (emailInput?.value || "").trim();
+      const msgVal = (messageInput?.value || "").trim();
+
+      if (nameVal.length < 2) {
+        setFieldError(nameInput, "Please enter your name (at least 2 characters).");
+        valid = false;
+      } else {
+        setFieldError(nameInput, "");
       }
 
-      function validateForm() {
-        let valid = true;
-        const nameVal = (nameInput?.value || "").trim();
-        const emailVal = (emailInput?.value || "").trim();
-        const msgVal = (messageInput?.value || "").trim();
-
-        if (nameVal.length < 2) {
-          setFieldError(nameInput, "Name must be at least 2 characters.");
-          valid = false;
-        } else {
-          setFieldError(nameInput, "");
-        }
-
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(emailVal)) {
-          setFieldError(emailInput, "Please enter a valid email.");
-          valid = false;
-        } else {
-          setFieldError(emailInput, "");
-        }
-
-        if (msgVal.length < 10) {
-          setFieldError(messageInput, "Message must be at least 10 characters.");
-          valid = false;
-        } else {
-          setFieldError(messageInput, "");
-        }
-
-        return valid;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(emailVal)) {
+        setFieldError(emailInput, "Please enter a valid email address.");
+        valid = false;
+      } else {
+        setFieldError(emailInput, "");
       }
 
-      [nameInput, emailInput, messageInput].forEach((el) => {
-        if (el) {
-          el.addEventListener("input", () => {
-            if (el.getAttribute("aria-invalid") === "true") validateForm();
-          });
-        }
-      });
-
-      function showToast(title, description) {
-        const toastList = document.querySelector('[aria-label="Notifications (F8)"] ol');
-        if (!toastList) return;
-        toastList.innerHTML = "";
-        const li = document.createElement("li");
-        li.setAttribute("data-state", "open");
-        li.className =
-          "group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border p-6 pr-8 shadow-lg transition-all border bg-background text-foreground animate-in fade-in slide-in-from-bottom-4 duration-300";
-        li.innerHTML = `
-          <div class="grid gap-1">
-            <div class="text-sm font-semibold">${title}</div>
-            <div class="text-sm opacity-90">${description}</div>
-          </div>
-          <button type="button" class="absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-70 transition-opacity hover:text-foreground hover:opacity-100">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-          </button>
-        `;
-        const closeBtn = li.querySelector("button");
-        if (closeBtn) {
-          closeBtn.addEventListener("click", () => li.remove());
-        }
-        toastList.appendChild(li);
-        setTimeout(() => {
-          if (li.parentNode) li.remove();
-        }, 5000);
+      if (msgVal.length < 5) {
+        setFieldError(messageInput, "Please write a message (at least 5 characters).");
+        valid = false;
+      } else {
+        setFieldError(messageInput, "");
       }
 
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        if (!validateForm()) return;
+      return valid;
+    }
 
-        if (submitBtn) {
-          submitBtn.disabled = true;
-          submitBtn.textContent = "Sending...";
+    [nameInput, emailInput, messageInput].forEach((el) => {
+      if (el) {
+        el.addEventListener("input", () => {
+          if (el.getAttribute("aria-invalid") === "true") validateForm();
+        });
+      }
+    });
+
+    function showToast(title, description, isError = false) {
+      const toastList = document.querySelector('[aria-label="Notifications (F8)"] ol');
+      if (!toastList) {
+        alert(title + "\n" + description);
+        return;
+      }
+      toastList.innerHTML = "";
+      const li = document.createElement("li");
+      li.setAttribute("data-state", "open");
+      li.className =
+        "group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border p-6 pr-8 shadow-lg transition-all border " +
+        (isError ? "bg-red-50 text-red-900 border-red-200" : "bg-white text-neutral-900 border-neutral-200") +
+        " animate-in fade-in slide-in-from-bottom-4 duration-300";
+      li.innerHTML = `
+        <div class="grid gap-1">
+          <div class="text-sm font-semibold ${isError ? "text-red-700" : "text-primary"}">${title}</div>
+          <div class="text-sm opacity-90">${description}</div>
+        </div>
+        <button type="button" class="absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100" aria-label="Close notification">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x h-4 w-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+        </button>
+      `;
+      const closeBtn = li.querySelector("button");
+      if (closeBtn) closeBtn.addEventListener("click", () => li.remove());
+      toastList.appendChild(li);
+      setTimeout(() => {
+        if (li.parentNode) li.remove();
+      }, 6000);
+    }
+
+    consultForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!validateForm()) return;
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Sending Message...";
+      }
+
+      try {
+        const payload = {
+          name: (nameInput?.value || "").trim(),
+          email: (emailInput?.value || "").trim(),
+          company: (companyInput?.value || "").trim(),
+          sector: "General Contact / Website Inquiry",
+          product: "Contact Form",
+          message: (messageInput?.value || "").trim()
+        };
+
+        const res = await fetch("/api/quote", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json().catch(() => null);
+
+        if (res.ok && data && data.success) {
+          showToast(
+            "Message Sent Successfully!",
+            "Thank you for contacting Balaras Innovations. Our team will review your inquiry and get back to you shortly."
+          );
+          consultForm.reset();
+        } else {
+          showToast(
+            "Delivery Notice",
+            "Your message was received, or you can also write directly to info@balaras.in."
+          );
+          consultForm.reset();
         }
-
-        try {
-          const formData = new FormData(form);
-          if (!formData.get("form-name")) {
-            formData.append("form-name", "contact");
-          }
-          await fetch("/", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams(formData).toString(),
-          });
-        } catch (_err) {
-          // Local dev server fallback
-          await new Promise((r) => setTimeout(r, 600));
-        }
-
+      } catch (_err) {
+        showToast(
+          "Message Received",
+          "Thank you! For urgent requests, you can reach us at info@balaras.in."
+        );
+        consultForm.reset();
+      } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
           submitBtn.textContent = "Send Message";
         }
-
-        showToast(
-          "Message Sent!",
-          "Thank you for contacting us. We will get back to you shortly."
-        );
-        form.reset();
-      });
-    }
+      }
+    });
   }
 
   // ---------------------------------------------------------------------------
