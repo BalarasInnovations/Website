@@ -1,9 +1,12 @@
 /**
  * Vercel Serverless Function: /api/quote
- * Handles validation and dispatching of quote requests
+ * Handles:
+ * 1. Validation and sanitization of incoming quote requests & contact messages
+ * 2. Dispatching alert email to sales team via Resend API
  */
 
 module.exports = async (req, res) => {
+  // CORS headers
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -19,6 +22,7 @@ module.exports = async (req, res) => {
   try {
     const { name, email, phone, company, sector, product, quantity, message } = req.body || {};
 
+    // Validate required fields
     if (!name || !email || !message) {
       return res.status(400).json({
         success: false,
@@ -26,74 +30,75 @@ module.exports = async (req, res) => {
       });
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return res.status(400).json({ success: false, error: "Invalid email address format." });
-    }
-
     const quoteId = "QUO-" + Date.now().toString(36).toUpperCase();
-    const timestamp = new Date().toISOString();
+    const timestamp = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
 
-    const quoteRecord = {
+    const lead = {
       quoteId,
       timestamp,
       name: String(name).trim(),
       email: String(email).trim().toLowerCase(),
       phone: phone ? String(phone).trim() : "Not provided",
       company: company ? String(company).trim() : "Not provided",
-      sector: sector ? String(sector).trim() : "General Inquiry",
-      product: product ? String(product).trim() : "Not specified",
+      sector: sector ? String(sector).trim() : "General Website Inquiry",
+      product: product ? String(product).trim() : "General Consultation",
       quantity: quantity ? String(quantity).trim() : "Not specified",
       message: String(message).trim()
     };
 
+    console.log(`[LEAD RECEIVED] ${quoteId}:`, JSON.stringify(lead));
+
     const resendApiKey = process.env.RESEND_API_KEY;
-    const salesEmail = process.env.SALES_EMAIL || "vasu@balaras.in, info@balaras.in";
 
     if (resendApiKey) {
       const emailHtml = `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden;">
-          <div style="background-color: #0284c7; color: #ffffff; padding: 20px; text-align: center;">
-            <h2 style="margin: 0; font-size: 22px;">New Quote Request [${quoteId}]</h2>
-            <p style="margin: 5px 0 0 0; font-size: 14px; opacity: 0.9;">Balaras Innovations Quote Backend</p>
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; background: #ffffff;">
+          <div style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #ffffff; padding: 24px; text-align: center;">
+            <h2 style="margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.5px;">New Website Inquiry [${quoteId}]</h2>
+            <p style="margin: 6px 0 0 0; font-size: 14px; opacity: 0.9;">Balaras Innovations Customer Portal</p>
           </div>
-          <div style="padding: 24px; color: #374151; font-size: 15px; line-height: 1.6;">
-            <table style="width: 100%; border-collapse: collapse;">
-              <tr><td style="padding: 8px 0; font-weight: bold; width: 140px;">Customer Name:</td><td>${quoteRecord.name}</td></tr>
-              <tr><td style="padding: 8px 0; font-weight: bold;">Email:</td><td><a href="mailto:${quoteRecord.email}">${quoteRecord.email}</a></td></tr>
-              <tr><td style="padding: 8px 0; font-weight: bold;">Phone:</td><td><a href="tel:${quoteRecord.phone}">${quoteRecord.phone}</a></td></tr>
-              <tr><td style="padding: 8px 0; font-weight: bold;">Company:</td><td>${quoteRecord.company}</td></tr>
-              <tr><td style="padding: 8px 0; font-weight: bold;">Sector:</td><td><span style="background: #e0f2fe; color: #0369a1; padding: 3px 8px; border-radius: 4px; font-size: 13px;">${quoteRecord.sector}</span></td></tr>
-              <tr><td style="padding: 8px 0; font-weight: bold;">Product:</td><td><strong>${quoteRecord.product}</strong></td></tr>
-              <tr><td style="padding: 8px 0; font-weight: bold;">Estimated Qty:</td><td>${quoteRecord.quantity}</td></tr>
+          <div style="padding: 24px; color: #1e293b; font-size: 15px; line-height: 1.6;">
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 10px 0; font-weight: 600; color: #64748b; width: 140px;">Customer Name:</td><td style="padding: 10px 0; font-weight: 700; color: #0f172a;">${lead.name}</td></tr>
+              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 10px 0; font-weight: 600; color: #64748b;">Email Address:</td><td style="padding: 10px 0;"><a href="mailto:${lead.email}" style="color: #0284c7; text-decoration: none; font-weight: 600;">${lead.email}</a></td></tr>
+              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 10px 0; font-weight: 600; color: #64748b;">Phone Number:</td><td style="padding: 10px 0;"><a href="tel:${lead.phone}" style="color: #0f172a; text-decoration: none;">${lead.phone}</a></td></tr>
+              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 10px 0; font-weight: 600; color: #64748b;">Company:</td><td style="padding: 10px 0; color: #0f172a;">${lead.company}</td></tr>
+              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 10px 0; font-weight: 600; color: #64748b;">Sector / Interest:</td><td style="padding: 10px 0;"><span style="background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 9999px; font-size: 13px; font-weight: 600;">${lead.sector}</span></td></tr>
+              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 10px 0; font-weight: 600; color: #64748b;">Product / Subject:</td><td style="padding: 10px 0; font-weight: 700; color: #0f172a;">${lead.product}</td></tr>
+              <tr><td style="padding: 10px 0; font-weight: 600; color: #64748b;">Estimated Qty:</td><td style="padding: 10px 0; color: #0f172a;">${lead.quantity}</td></tr>
             </table>
-            <div style="margin-top: 16px; padding: 12px; background-color: #f9fafb; border-left: 4px solid #0284c7; border-radius: 4px;">
-              <strong>Project Requirements / Message:</strong>
-              <p style="margin: 8px 0 0 0; white-space: pre-wrap;">${quoteRecord.message}</p>
+
+            <div style="background-color: #f8fafc; border-left: 4px solid #0284c7; padding: 16px; border-radius: 4px; margin-top: 10px;">
+              <div style="font-weight: 700; color: #0f172a; margin-bottom: 6px;">Customer Requirements / Message:</div>
+              <div style="color: #334155; white-space: pre-wrap; font-size: 14px;">${lead.message}</div>
             </div>
-            <p style="margin-top: 20px; font-size: 12px; color: #9ca3af; text-align: center;">Received on ${new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })} IST</p>
+
+            <p style="margin-top: 24px; font-size: 12px; color: #94a3b8; text-align: center;">Submitted on ${timestamp} IST &bull; Balaras Innovations Platform</p>
           </div>
         </div>
       `;
 
-      await fetch("https://api.resend.com/emails", {
+      const sendRes = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${resendApiKey}`,
+          "Authorization": `Bearer ${resendApiKey.trim()}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
           from: "Balaras Website <onboarding@resend.dev>",
-          to: salesEmail.split(",").map(e => e.trim()),
-          subject: `Quote Request: ${quoteRecord.product || quoteRecord.sector} - ${quoteRecord.name}`,
+          to: ["info@balaras.in"],
+          subject: `[Lead] ${lead.product} - ${lead.name}`,
           html: emailHtml
         })
       });
+
+      const resData = await sendRes.json().catch(() => null);
+      console.log(`[RESEND STATUS ${sendRes.status}]:`, resData);
     }
 
     return res.status(200).json({
       success: true,
-      message: "Quote request submitted successfully. Our team will contact you shortly.",
+      message: "Inquiry submitted successfully. Our team will contact you shortly.",
       quoteId
     });
 
