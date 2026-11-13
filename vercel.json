@@ -4,6 +4,8 @@
     { "source": "/supply", "destination": "/supply.html" },
     { "source": "/solutions", "destination": "/solutions.html" },
     { "source": "/about", "destination": "/about.html" },
+    { "source": "/dashboard", "destination": "https://balaras-iot-dashboard.onrender.com/dashboard" },
+    { "source": "/dashboard/:path*", "destination": "https://balaras-iot-dashboard.onrender.com/dashboard/:path*" },
     { "source": "/(.*)", "destination": "/$1" }
   ]
 }
