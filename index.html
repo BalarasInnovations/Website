@@ -71,6 +71,58 @@
     }
   }
 
+
+  /* High-Contrast 2x3 Sensor Boxes & Dark Dashboard Theme */
+  .iot-dashboard-container {
+    background: #0f172a !important; /* Deep dark slate */
+    border: 1px solid #0284c7 !important; /* Vibrant cyan border */
+    border-radius: 12px !important;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5) !important;
+    color: #ffffff !important;
+  }
+  .sensor-grid-2x3 {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 10px !important;
+    margin-bottom: 12px !important;
+  }
+  .sensor-box {
+    background: #1e293b !important; /* Slate 800 */
+    border: 1px solid #334155 !important; /* Slate 700 */
+    border-radius: 8px !important;
+    padding: 8px 12px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05) !important;
+    transition: border-color 0.2s ease, transform 0.2s ease !important;
+  }
+  .sensor-box:hover {
+    border-color: #38bdf8 !important;
+    transform: translateY(-1px) !important;
+  }
+  .sensor-box-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    font-size: 11px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    color: #94a3b8 !important; /* Slate 400 */
+    font-weight: 600 !important;
+  }
+  .sensor-box-val {
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    margin-top: 2px !important;
+  }
+  .sensor-box-val span {
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    color: #94a3b8 !important;
+  }
+
 </style><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/><title>Balaras Innovations | Water Testing Solutions</title><meta name="description" content="Manufacturer and supplier of high-quality water testing equipment, test kits, and reagents."/><link rel="icon" href="assets/favicon.ico" type="image/x-icon" sizes="16x16"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200..800&amp;display=swap" rel="stylesheet"/>
 
 <style id="nav-click-fix">
@@ -131,77 +183,106 @@
 </div><div class="mt-8 flex space-x-2"><button type="button" data-hero-dot="0" class="h-2 rounded-full transition-all duration-300 w-8 bg-primary" aria-label="Hero slide 1"></button><button type="button" data-hero-dot="1" class="w-2 h-2 rounded-full transition-all duration-300 bg-neutral-300 hover:bg-neutral-400" aria-label="Hero slide 2"></button><button type="button" data-hero-dot="2" class="w-2 h-2 rounded-full transition-all duration-300 bg-neutral-300 hover:bg-neutral-400" aria-label="Hero slide 3"></button><button type="button" data-hero-dot="3" class="w-2 h-2 rounded-full transition-all duration-300 bg-neutral-300 hover:bg-neutral-400" aria-label="Hero slide 4"></button>
 <button type="button" data-hero-dot="4" class="w-2 h-2 rounded-full transition-all duration-300 bg-neutral-300 hover:bg-neutral-400" aria-label="Hero slide 5"></button></div><div class="absolute top-1/4 right-0 opacity-10 animate-float-1 hidden xl:block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-droplets h-20 w-20 text-primary"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"></path><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"></path></svg></div><div class="absolute bottom-1/4 left-10 opacity-10 animate-float-2 hidden xl:block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flask-conical h-16 w-16 text-primary"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"></path><path d="M6.453 15h11.094"></path><path d="M8.5 2h7"></path></svg></div></div><div class="hero-col-right relative h-[400px] lg:h-auto overflow-hidden w-full"><div class="relative w-full h-full group"><img data-hero-img="0" alt="Professional laboratory setting with water droplets and beakers, representing high-quality water testing." data-ai-hint="laboratory water" decoding="async" data-nimg="fill" class="object-cover transition-opacity duration-1000 opacity-100 group-hover:scale-105" style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent" sizes="100vw" src="assets/hero.jpg"/><div data-hero-img="1" class="absolute inset-0 transition-opacity duration-1000 opacity-0 group-hover:scale-105 bg-white"><div id="hero-env-subslider" class="relative w-full h-full"><img data-hero-env-pic="0" alt="BL-Strato DataLogger Product Specification" class="absolute inset-0 w-full h-full object-contain p-4 transition-opacity duration-700 opacity-100" src="assets/bl-strato-data-logger.jpg"/><img data-hero-env-pic="1" alt="BX-TRx Telemetry Product Specification" class="absolute inset-0 w-full h-full object-contain p-4 transition-opacity duration-700 opacity-0" src="assets/wireless-radio-transceiver.jpg"/><img data-hero-env-pic="2" alt="BD-UHF Demodulator Product Specification" class="absolute inset-0 w-full h-full object-contain p-4 transition-opacity duration-700 opacity-0" src="assets/demodulator-bd-uhf-01.jpg"/><img data-hero-env-pic="3" alt="BT-UHF Transmitter Product Specification" class="absolute inset-0 w-full h-full object-contain p-4 transition-opacity duration-700 opacity-0" src="assets/bt-uhf-transmitter.jpg"/></div><div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-3 py-1 bg-black/50 backdrop-blur-md rounded-full z-20 pointer-events-none"><span class="w-1.5 h-1.5 rounded-full bg-primary" data-hero-env-dot="0"></span><span class="w-1.5 h-1.5 rounded-full bg-white/60" data-hero-env-dot="1"></span><span class="w-1.5 h-1.5 rounded-full bg-white/60" data-hero-env-dot="2"></span><span class="w-1.5 h-1.5 rounded-full bg-white/60" data-hero-env-dot="3"></span></div></div><img data-hero-img="2" alt="Professional water research laboratory with analytical testing equipment." data-ai-hint="water research" decoding="async" data-nimg="fill" class="object-cover transition-opacity duration-1000 opacity-0 group-hover:scale-105" style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent" sizes="100vw" src="assets/laboratory-research.jpg"/><img data-hero-img="3" alt="Industrial water monitoring systems in a large-scale manufacturing plant." data-ai-hint="industrial water" decoding="async" data-nimg="fill" class="object-cover transition-opacity duration-1000 opacity-0 group-hover:scale-105" style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent" sizes="100vw" src="assets/industrial-water.jpg"/>
 
-<div data-hero-img="4" class="absolute inset-0 transition-opacity duration-1000 opacity-0 group-hover:scale-105 bg-slate-950 flex flex-col p-3 sm:p-5 text-white pointer-events-auto h-full w-full z-20">
-  <div class="w-full h-full rounded-xl border border-sky-500/40 bg-slate-900/95 shadow-2xl p-3 sm:p-4 flex flex-col justify-between backdrop-blur-md">
+<div data-hero-img="4" class="absolute inset-0 transition-opacity duration-1000 opacity-0 group-hover:scale-105 bg-slate-950 flex flex-col p-3 sm:p-5 text-white pointer-events-auto h-full w-full z-30" style="z-index: 35 !important; background: #020617 !important;">
+  <div class="iot-dashboard-container w-full h-full p-4 flex flex-col justify-between">
     
-    <!-- Header Bar -->
-    <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-2">
-      <div class="flex items-center gap-2">
-        <span class="relative flex h-2.5 w-2.5">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+    <!-- Top Header Status Bar -->
+    <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 10px;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="display: flex; height: 10px; width: 10px; position: relative;">
+          <span style="position: absolute; display: inline-flex; height: 100%; width: 100%; border-radius: 9999px; background: #10b981; opacity: 0.75; animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;"></span>
+          <span style="position: relative; display: inline-flex; border-radius: 9999px; height: 10px; width: 10px; background: #10b981;"></span>
         </span>
-        <span class="text-xs font-mono font-bold uppercase tracking-wider text-sky-400">IoT Telemetry &amp; GIS Map</span>
+        <span style="font-family: monospace; font-size: 12px; font-weight: 700; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.05em;">Live IoT Sensor Telemetry</span>
       </div>
-      <div class="flex items-center gap-2">
-        <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800/80 font-bold">LIVE ONLINE</span>
-      </div>
-    </div>
-
-    <!-- Quick Sensor Gauges Bar: 2 Rows x 3 Columns -->
-    <div class="grid grid-cols-3 gap-2 mb-2.5">
-      <!-- Row 1 -->
-      <div class="px-2.5 py-1.5 rounded-md bg-slate-800/90 border border-slate-700/80 flex items-center justify-between">
-        <span class="text-[10px] uppercase tracking-wider text-slate-400 font-mono">Temp</span>
-        <span class="text-xs sm:text-sm font-bold text-amber-400 font-mono">26.4°C</span>
-      </div>
-      <div class="px-2.5 py-1.5 rounded-md bg-slate-800/90 border border-slate-700/80 flex items-center justify-between">
-        <span class="text-[10px] uppercase tracking-wider text-slate-400 font-mono">Humidity</span>
-        <span class="text-xs sm:text-sm font-bold text-sky-400 font-mono">62.8%</span>
-      </div>
-      <div class="px-2.5 py-1.5 rounded-md bg-slate-800/90 border border-slate-700/80 flex items-center justify-between">
-        <span class="text-[10px] uppercase tracking-wider text-slate-400 font-mono">Pressure</span>
-        <span class="text-xs sm:text-sm font-bold text-violet-400 font-mono">1013 <span class="text-[8px] font-normal text-slate-400">hPa</span></span>
-      </div>
-      <!-- Row 2 -->
-      <div class="px-2.5 py-1.5 rounded-md bg-slate-800/90 border border-slate-700/80 flex items-center justify-between">
-        <span class="text-[10px] uppercase tracking-wider text-slate-400 font-mono">pH Water</span>
-        <span class="text-xs sm:text-sm font-bold text-emerald-400 font-mono">7.38</span>
-      </div>
-      <div class="px-2.5 py-1.5 rounded-md bg-slate-800/90 border border-slate-700/80 flex items-center justify-between">
-        <span class="text-[10px] uppercase tracking-wider text-slate-400 font-mono">Turbidity</span>
-        <span class="text-xs sm:text-sm font-bold text-cyan-400 font-mono">0.82 <span class="text-[8px] font-normal text-slate-400">NTU</span></span>
-      </div>
-      <div class="px-2.5 py-1.5 rounded-md bg-slate-800/90 border border-slate-700/80 flex items-center justify-between">
-        <span class="text-[10px] uppercase tracking-wider text-slate-400 font-mono">Dissolved O₂</span>
-        <span class="text-xs sm:text-sm font-bold text-teal-400 font-mono">8.42 <span class="text-[8px] font-normal text-slate-400">mg/L</span></span>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="background: #064e3b; color: #34d399; border: 1px solid #059669; font-size: 10px; font-family: monospace; font-weight: 700; padding: 2px 8px; border-radius: 4px;">ONLINE</span>
+        <span style="font-size: 11px; font-family: monospace; color: #94a3b8;">Stations: 3 Connected</span>
       </div>
     </div>
 
-    <!-- Real Interactive GIS Map Window (OpenStreetMap / Carto Dark GIS tile) -->
-    <div class="relative flex-1 min-h-[260px] sm:min-h-[280px] rounded-lg overflow-hidden border border-slate-700 bg-slate-950 shadow-inner">
+    <!-- 2 Rows x 3 Columns Distinct Visual Sensor Boxes -->
+    <div class="sensor-grid-2x3">
+      <!-- Box 1: Temp -->
+      <div class="sensor-box">
+        <div class="sensor-box-header">
+          <span>Temperature</span>
+          <span style="color: #fbbf24;">°C</span>
+        </div>
+        <div class="sensor-box-val" style="color: #fbbf24;">26.4 <span>°C</span></div>
+      </div>
+
+      <!-- Box 2: Humidity -->
+      <div class="sensor-box">
+        <div class="sensor-box-header">
+          <span>Humidity</span>
+          <span style="color: #38bdf8;">RH</span>
+        </div>
+        <div class="sensor-box-val" style="color: #38bdf8;">62.8 <span>%</span></div>
+      </div>
+
+      <!-- Box 3: Pressure -->
+      <div class="sensor-box">
+        <div class="sensor-box-header">
+          <span>Pressure</span>
+          <span style="color: #c084fc;">Baro</span>
+        </div>
+        <div class="sensor-box-val" style="color: #c084fc;">1013.2 <span>hPa</span></div>
+      </div>
+
+      <!-- Box 4: pH -->
+      <div class="sensor-box">
+        <div class="sensor-box-header">
+          <span>pH Water</span>
+          <span style="color: #34d399;">Probe</span>
+        </div>
+        <div class="sensor-box-val" style="color: #34d399;">7.38 <span>pH</span></div>
+      </div>
+
+      <!-- Box 5: Turbidity -->
+      <div class="sensor-box">
+        <div class="sensor-box-header">
+          <span>Turbidity</span>
+          <span style="color: #22d3ee;">Optic</span>
+        </div>
+        <div class="sensor-box-val" style="color: #22d3ee;">0.82 <span>NTU</span></div>
+      </div>
+
+      <!-- Box 6: DO -->
+      <div class="sensor-box">
+        <div class="sensor-box-header">
+          <span>Dissolved O₂</span>
+          <span style="color: #2dd4bf;">DO</span>
+        </div>
+        <div class="sensor-box-val" style="color: #2dd4bf;">8.42 <span>mg/L</span></div>
+      </div>
+    </div>
+
+    <!-- Real Interactive GIS Map Window -->
+    <div style="position: relative; flex: 1 1 0%; min-height: 240px; border-radius: 8px; overflow: hidden; border: 1px solid #334155; background: #020617; box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.6);">
       <iframe 
         title="Balaras IoT Field Telemetry Stations Map"
-        class="w-full h-full border-0 filter contrast-125"
+        style="width: 100%; height: 100%; border: 0;"
         src="https://www.openstreetmap.org/export/embed.html?bbox=77.5%2C16.8%2C79.2%2C18.2&amp;layer=mapnik&amp;marker=17.385%2C78.4867"
         loading="lazy"
       ></iframe>
       
-      <!-- Real-time HUD Map Overlays -->
-      <div class="absolute top-2 left-2 z-10 bg-slate-900/90 backdrop-blur-md px-2.5 py-1 rounded border border-sky-500/40 text-[10px] font-mono text-sky-300 flex items-center gap-1.5 shadow">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-        <span class="font-bold">Station: Hyderabad HQ (17.385° N, 78.486° E)</span>
+      <!-- Top HUD Floating Pill -->
+      <div style="position: absolute; top: 8px; left: 8px; z-index: 10; background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(8px); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.4); font-size: 11px; font-family: monospace; color: #38bdf8; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);">
+        <span style="height: 6px; width: 6px; border-radius: 9999px; background: #10b981;"></span>
+        <span style="font-weight: 700;">GIS Station: Hyderabad Hub (17.385° N, 78.486° E)</span>
       </div>
 
-      <div class="absolute bottom-2 right-2 z-10 bg-slate-900/90 backdrop-blur-md px-2.5 py-1 rounded border border-slate-700 text-[10px] font-mono text-slate-300 flex items-center gap-2 shadow">
-        <span class="text-emerald-400 font-bold">● Telemetry Uplink Active</span>
+      <!-- Bottom Status Pill -->
+      <div style="position: absolute; bottom: 8px; right: 8px; z-index: 10; background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(8px); padding: 4px 10px; border-radius: 6px; border: 1px solid #334155; font-size: 10px; font-family: monospace; color: #34d399; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);">
+        ● Telemetry Uplink Active
       </div>
     </div>
 
     <!-- Bottom Action Bar -->
-    <div class="pt-2 mt-2 border-t border-slate-800 flex items-center justify-between">
-      <span class="text-[10px] font-mono text-slate-400 hidden sm:inline">Sensors: Temperature, Humidity, Pressure, pH, Turbidity, DO</span>
-      <a href="https://balaras-iot-dashboard.onrender.com/dashboard/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider text-white bg-primary hover:bg-primary/90 px-4 py-2 rounded transition-all shadow w-full sm:w-auto">
+    <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #1e293b; padding-top: 10px; margin-top: 10px;">
+      <span style="font-size: 11px; font-family: monospace; color: #64748b;">Telemetry Protocol: MODBUS / MQTT / UHF</span>
+      <a href="https://balaras-iot-dashboard.onrender.com/dashboard/" target="_blank" rel="noopener noreferrer" style="background: #0284c7; color: #ffffff; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 8px 16px; border-radius: 4px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);">
         <span>Open Render Dashboard ↗</span>
       </a>
     </div>
