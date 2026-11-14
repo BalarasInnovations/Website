@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       const heroGradient = document.querySelector(".hero-col-right > .bg-gradient-to-r");
       if (heroGradient) {
-        if (idx === 1) {
+        if (idx === 1 || idx === 4) {
           heroGradient.style.display = "none";
         } else {
           heroGradient.style.display = "";
