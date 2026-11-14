@@ -46,6 +46,29 @@
 #mobile-drawer.translate-x-0 { transform: translateX(0) !important; }
 #mobile-drawer-backdrop { pointer-events: auto; }
 #mobile-drawer-backdrop.hidden { display: none !important; }
+
+  /* Mobile Drawer Positioning & Visibility */
+  #mobile-drawer {
+    transform: translateX(100%) !important;
+  }
+  #mobile-drawer.translate-x-0 {
+    transform: translateX(0) !important;
+  }
+  #mobile-drawer.translate-x-full {
+    transform: translateX(100%) !important;
+  }
+  #mobile-drawer-backdrop {
+    pointer-events: auto;
+  }
+  #mobile-drawer-backdrop.hidden {
+    display: none !important;
+  }
+  @media (min-width: 768px) {
+    #mobile-drawer, #mobile-drawer-backdrop {
+      display: none !important;
+    }
+  }
+
 </style><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/><title>Balaras Innovations | Water Testing Solutions</title><meta name="description" content="Manufacturer and supplier of high-quality water testing equipment, test kits, and reagents."/><link rel="icon" href="assets/favicon.ico" type="image/x-icon" sizes="16x16"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200..800&amp;display=swap" rel="stylesheet"/>
 <style id="nav-click-fix">
   header {
@@ -101,7 +124,7 @@
   </div>
 </form></div></div></div></section><!--$--><!--/$--></main><footer class="bg-secondary border-t"><div class="container mx-auto max-w-screen-2xl px-4"><div class="grid grid-cols-1 md:grid-cols-4 gap-8 py-12"><div class="md:col-span-1"><div class="flex items-center mb-4"><a href="index.html"><img alt="Balaras Technologies Logo" loading="lazy" width="480" height="140" decoding="async" data-nimg="1" class="h-24 w-auto object-contain" style="color:transparent" src="assets/logo1.png"/></a></div><p class="text-sm text-muted-foreground">Pioneering Technological Innovation for a cleaner, safer world.</p><div class="mt-4 space-y-1 text-sm text-muted-foreground"><div><a class="hover:text-foreground" href="mailto:info@balaras.in">info@balaras.in</a></div><div><a class="hover:text-foreground" href="mailto:vasu@balaras.in">vasu@balaras.in</a></div><div><a class="hover:text-foreground" href="tel:+918500007757">+91 8500007757</a></div></div></div><div class="col-span-1 md:col-span-3 grid grid-cols-2 sm:grid-cols-3 gap-8"><div><h3 class="font-semibold text-foreground">Explore</h3><ul class="mt-4 space-y-3 text-sm"><li><a class="text-muted-foreground hover:text-foreground" href="supply.html">Supply</a></li><li><a class="text-muted-foreground hover:text-foreground" href="solutions.html">Solutions</a></li><li><a class="text-muted-foreground hover:text-foreground" href="#our-approach">Our Approach</a></li></ul></div><div><h3 class="font-semibold text-foreground">Company</h3><ul class="mt-4 space-y-3 text-sm"><li><a class="text-muted-foreground hover:text-foreground" href="about.html">About Us</a></li><li><a class="text-muted-foreground hover:text-foreground" href="#consultation">Contact</a></li></ul></div><div><h3 class="font-semibold text-foreground">Connect</h3><ul class="mt-4 space-y-3 text-sm"><li><a class="text-muted-foreground hover:text-foreground" href="#">LinkedIn</a></li><li><a class="text-muted-foreground hover:text-foreground" href="#">Twitter</a></li></ul></div></div></div><div class="py-6 border-t"><p class="text-sm text-muted-foreground text-center">© <!-- -->2025<!-- --> Balaras Innovations. All rights reserved.</p></div></div></footer></div><div role="region" aria-label="Notifications (F8)" tabindex="-1" style="pointer-events:none"><ol tabindex="-1" class="fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]"></ol></div>
 <div id="mobile-drawer-backdrop" class="fixed inset-0 z-50 bg-black/80 hidden opacity-0 transition-opacity duration-300"></div>
-<div id="mobile-drawer" class="fixed z-50 inset-y-0 right-0 h-full w-[300px] border-l bg-background p-0 shadow-lg transition-transform duration-300 translate-x-full">
+<div id="mobile-drawer" style="transform: translateX(100%);" class="fixed z-50 inset-y-0 right-0 h-full w-[300px] border-l bg-background p-0 shadow-lg transition-transform duration-300 translate-x-full">
   <div class="flex h-full flex-col">
     <div class="flex items-center justify-between p-6 border-b">
       <a href="index.html" class="flex items-center gap-2">
